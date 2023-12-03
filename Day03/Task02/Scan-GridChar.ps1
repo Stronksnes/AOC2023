@@ -11,22 +11,40 @@ function Scan-GridChar {
     if($Array[$X][$Y] -notin $numberStringArray){exit}
 
     $start = $Y
-    if($Array[$X][$Y-1] -in $numberStringArray){
-        
-        $start = $Y-1
-        if($Array[$X][$Y-2] -in $numberStringArray){$start = $Y-2}
+
+    if($Y -ge 1){
+
+        if($Array[$X][$Y-1] -in $numberStringArray){
+            
+            $start = $Y-1
+            if($Y -ge 2){
+
+                if($Array[$X][$Y-2] -in $numberStringArray){$start = $Y-2}
+            
+            }
+
+        }
 
     }
 
     $end = $Y
-    if($Array[$X][$Y+1] -in $numberStringArray){
-        
-        $end = $Y+1
-        if($Array[$X][$Y+2] -in $numberStringArray){$end = $Y+2}
+
+    if($Y -lt ($lines[$X].Length -2)){
+
+        if($Array[$X][$Y+1] -in $numberStringArray){
+            
+            $end = $Y+1
+            if($Y -lt ($lines[$X].Length -1)){
+
+                if($Array[$X][$Y+2] -in $numberStringArray){$end = $Y+2}
+
+            }
+
+        }
 
     }
 
-    $number += $Array[$X][$start..$end] -join ""
+    $number = $Array[$X][$start..$end] -join ""
     $start..$end | % {$coordinates += "$x" + "$_"}
 
     $obj = [PSCustomObject]@{
